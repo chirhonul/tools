@@ -1,3 +1,3 @@
 # tools
 
-General tooling.
+The tools repo holds general tooling.
