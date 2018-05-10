@@ -13,7 +13,7 @@
 [ -e /dev/mapper/unlocked ] || {
   echo "Unlocking LUKS volume.."
   sudo bash -c " \
-    cryptsetup open --type plain /dev/sdb3 unlocked && \
+    cryptsetup open --type plain /dev/disk/by-id/usb-PNY_USB_2.0_FD_0400000000013503-0:0-part3 unlocked && \
     mount /dev/mapper/unlocked /mnt"
 }
 
@@ -49,6 +49,8 @@ fi
 
 [ -e ~/.ssh/known_hosts ] || {
   echo "Copying ~/.ssh/known_hosts.."
+  mkdir -p ~/.ssh
+  chmod 700 ~/.ssh/
   cp /mnt/known_hosts ~/.ssh/
 }
 
