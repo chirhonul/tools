@@ -46,4 +46,10 @@ fi
   echo "Creating symlink to /mnt/bin directory.."
   ln -s /mnt/bin ~/
 }
+
+[ -e ~/.ssh/known_hosts ] || {
+  echo "Copying ~/.ssh/known_hosts.."
+  cp /mnt/known_hosts ~/.ssh/
+}
+
 echo "Done."
