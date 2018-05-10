@@ -27,6 +27,23 @@ if ! ssh-add -L | grep -q chirhonul; then
   ssh-add /mnt/keys/chirhonul_github0_id_rsa
 fi
 
-[ -e ~/.gitconfig ] || cp /mnt/src/.gitconfig ~/
+[ -e ~/.gitconfig ] || {
+  echo "Adding .gitconfig.."
+  cp /mnt/src/.gitconfig ~/
+}
 
+[ -e ~/src ] || {
+  echo "Creating symlinks to /mnt/bin directory.."
+  ln -s /mnt/src ~/
+}
+
+[ -e ~/docs ] || {
+  echo "Creating symlinks to /mnt/docs directory.."
+  ln -s /mnt/docs ~/
+}
+
+[ -e ~/bin ] || {
+  echo "Creating symlink to /mnt/bin directory.."
+  ln -s /mnt/bin ~/
+}
 echo "Done."
