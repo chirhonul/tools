@@ -38,8 +38,8 @@ fi
 }
 
 [ -e ~/docs ] || {
-  echo "Creating symlinks to /mnt/docs directory.."
-  ln -s /mnt/docs ~/
+  echo "Creating symlinks to docs directory.."
+  ln -s /mnt/src/github.com/chirhonul/docs ~/
 }
 
 [ -e ~/bin ] || {
