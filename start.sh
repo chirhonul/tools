@@ -27,11 +27,6 @@ if ! ssh-add -L | grep -q chirhonul; then
   ssh-add /mnt/keys/chirhonul_github0_id_rsa
 fi
 
-[ -e ~/.gitconfig ] || {
-  echo "Adding .gitconfig.."
-  cp /mnt/src/.gitconfig ~/
-}
-
 [ -e ~/src ] || {
   echo "Creating symlinks to /mnt/bin directory.."
   ln -s /mnt/src ~/
@@ -51,6 +46,12 @@ fi
   echo "Creating symlink to conf directory.."
   ln -s /mnt/src/github.com/chirhonul/conf ~/
 }
+
+[ -e ~/.gitconfig ] || {
+  echo "Adding .gitconfig.."
+  cp ~/conf/.gitconfig ~/
+}
+
 
 [ -e ~/.ssh/known_hosts ] || {
   echo "Copying ~/.ssh/known_hosts.."
@@ -73,9 +74,9 @@ fi
   echo "4b677d698c65370afa33757b6954ade60347aaca310ea92a63ed717d7cb0c2ff /mnt/src/go1.10.2.linux-amd64.tar.gz" | sha256sum -c -
 }
 
-if go version 2>/dev/null; then
+if ! go version 2>/dev/null; then
   echo "Installing go.."
-  sudo tar -C /usr/local -xzf go1.10.2.linux-amd64.tar.gz
+  sudo tar -C /usr/local -xzf /mnt/src/go1.10.2.linux-amd64.tar.gz
 fi
 
 cp ~/conf/.bashrc ~/
