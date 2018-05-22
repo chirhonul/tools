@@ -1,12 +1,12 @@
 #
-# Script for setting up newly booted Tails instance with stuff we need.
+# Script for setting up newly booted Tails instance with packages and configuration.
 #
 
 [ -e /tmp/.packages_installed_marker ] || {
   echo "Installing packages.."
   sudo bash -c " \
     apt-get -y update && \
-    apt-get -y install tmux"
+    apt-get -y install gcc libc6-dev tmux"
   touch /tmp/.packages_installed_marker
 }
 
@@ -47,11 +47,37 @@ fi
   ln -s /mnt/bin ~/
 }
 
+[ -e ~/conf ] || {
+  echo "Creating symlink to conf directory.."
+  ln -s /mnt/src/github.com/chirhonul/conf ~/
+}
+
 [ -e ~/.ssh/known_hosts ] || {
   echo "Copying ~/.ssh/known_hosts.."
   mkdir -p ~/.ssh
   chmod 700 ~/.ssh/
   cp /mnt/known_hosts ~/.ssh/
 }
+
+[ -e /tmp/docs_clear ] || {
+  echo "Creating /tmp/docs_clear.."
+  mkdir -p /tmp/docs_clear
+  gpg --out /tmp/docs.tar.gz --decrypt ~/docs/docs.tar.gz.asc
+  tar xzfv /tmp/docs.tar.gz
+  mv docs_clear /tmp/
+}
+
+[ -e ~/src/go1.10.2.linux-amd64.tar.gz ] || {
+  echo "Fetching go installation.."
+  torify curl -vLO https://golang.org/dl/go1.10.2.linux-amd64.tar.gz
+  echo "4b677d698c65370afa33757b6954ade60347aaca310ea92a63ed717d7cb0c2ff /mnt/src/go1.10.2.linux-amd64.tar.gz" | sha256sum -c -
+}
+
+if go version 2>/dev/null; then
+  echo "Installing go.."
+  sudo tar -C /usr/local -xzf go1.10.2.linux-amd64.tar.gz
+fi
+
+cp ~/conf/.bashrc ~/
 
 echo "Done."
