@@ -82,10 +82,10 @@ if ! go version 2>/dev/null; then
   sudo tar -C /usr/local -xzf /mnt/src/go1.10.2.linux-amd64.tar.gz
 fi
 
-[ -e ~/src/google-chrome-stable_current_amd64.deb ] || {
+[ -e /mnt/bin/google-chrome-stable_current_amd64.deb ] || {
   echo "Downloading google-chrome-stable.."
   torify curl -vLO https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-  echo "229b35f0d41bbb6edd98ce4ab8305994a0f5cd1ac4d9817571f07365b2d1ad80 /mnt/src/google-chrome-stable_current_amd64.deb" | sha256sum -c -
+  echo "229b35f0d41bbb6edd98ce4ab8305994a0f5cd1ac4d9817571f07365b2d1ad80 /mnt/bin/google-chrome-stable_current_amd64.deb" | sha256sum -c -
 }
 
 if ! google-chrome-stable 2>/dev/null; then
