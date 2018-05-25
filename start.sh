@@ -7,7 +7,7 @@ set -euo pipefail
   echo "Installing packages.."
   sudo bash -c " \
     apt-get -y update && \
-    apt-get -y install gcc libc6-dev tmux"
+    apt-get -y install adduser gcc libc6-dev tmux"
   touch /tmp/.packages_installed_marker
 }
 
@@ -103,7 +103,6 @@ if ! google-chrome-stable 2>/dev/null; then
     dpkg -i /mnt/bin/google-chrome-stable_current_amd64.deb && \
     rm /etc/apt/sources.list.d/google-chrome.list"
 fi
-}
 
 cp ~/conf/.bashrc ~/
 
