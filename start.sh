@@ -1,6 +1,7 @@
 #
 # Script for setting up newly booted Tails instance with packages and configuration.
 #
+set -euo pipefail
 
 [ -e /tmp/.packages_installed_marker ] || {
   echo "Installing packages.."
@@ -89,9 +90,18 @@ fi
 
 if ! google-chrome-stable 2>/dev/null; then
   echo "Installing google-chrome-stable.."
-  sudo dkpg -i google-chrome-stable_current_amd64.deb
-  sudo apt --fix-broken install
-  sudo dkpg -i google-chrome-stable_current_amd64.deb
+  # The first dpkg command below fails with the following:
+  #  "google-chrome-stable depends on libappindicator3-1; however:
+  #    Package libappindicator3-1 is not installed."
+  # The 'apt-get -yf install' command fixes this, but adds some apt sources for dl.google.com
+  # that won't resolve due to network traffic going via the SOCKS5 proxy, so we have to remove
+  # the extra apt sources and re-install.
+  sudo bash -c " \
+    dpkg -i /mnt/bin/google-chrome-stable_current_amd64.deb || true && \
+    apt-get -yf install && \
+    apt-get -y update && \
+    dpkg -i /mnt/bin/google-chrome-stable_current_amd64.deb && \
+    rm /etc/apt/sources.list.d/google-chrome.list"
 fi
 }
 
