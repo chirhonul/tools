@@ -22,6 +22,17 @@ if ! gpg -k | grep -q chinul; then
   gpg --import < /mnt/keys/chinul.key
 fi
 
+[ -e /tmp/docs_clear ] || {
+  echo "Creating /tmp/docs_clear.."
+  mkdir -p /tmp/docs_clear
+  gpg --out /tmp/docs.tar.gz --decrypt ~/docs/docs.tar.gz.asc
+  tar xzfv /tmp/docs.tar.gz
+  mv docs_clear /tmp/
+  srm /tmp/docs.tar.gz
+}
+
+# todo: step below requires ssh passphrase from docs_clear, should
+# look up automatically here.
 if ! ssh-add -L | grep -q chirhonul; then
   echo "Adding SSH key.."
   ssh-add /mnt/keys/chirhonul_github0_id_rsa
@@ -34,7 +45,7 @@ fi
 
 [ -e ~/docs ] || {
   echo "Creating symlinks to docs directory.."
-  ln -s /mnt/src/github.com/chirhonul/docs ~/
+  ln -s /tmp/docs_clear ~/docs
 }
 
 [ -e ~/bin ] || {
@@ -52,20 +63,11 @@ fi
   cp ~/conf/.gitconfig ~/
 }
 
-
 [ -e ~/.ssh/known_hosts ] || {
   echo "Copying ~/.ssh/known_hosts.."
   mkdir -p ~/.ssh
   chmod 700 ~/.ssh/
   cp /mnt/known_hosts ~/.ssh/
-}
-
-[ -e /tmp/docs_clear ] || {
-  echo "Creating /tmp/docs_clear.."
-  mkdir -p /tmp/docs_clear
-  gpg --out /tmp/docs.tar.gz --decrypt ~/docs/docs.tar.gz.asc
-  tar xzfv /tmp/docs.tar.gz
-  mv docs_clear /tmp/
 }
 
 [ -e ~/src/go1.10.2.linux-amd64.tar.gz ] || {
