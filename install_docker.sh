@@ -2,11 +2,21 @@
 #
 # Install docker.
 #
+# Start with:
+#   sudo adduser docker --disabled-password
+#   sudo sh -c "export PATH=$PATH:/usr/local/docker:/sbin; dockerd"
+# Pulling images via SOCKS5 proxy seems like it should work (but doesn't) with:
+#   ALL_PROXY=socks5://localhost:9150 docker run alpine echo hi
+# Unable to find image 'alpine:latest' locally
+# /usr/local/docker/docker: Error response from daemon: Get https://registry-1.docker.io/v2/: dial tcp 127.0.0.1:9150: getsockopt: connection refused.
+#
+# Another option would be to ssh forward a socket to a remote docker host:
+#   ssh -L ./mysock:/var/run/docker.sock -Nf hostname.example.com
+#   DOCKER_HOST=unix://mysock docker ps
+#
 set -eu
 
 cd /mnt/bin
-
-sudo apt-get -y install apparmor
 
 [ -e docker-18.03.1-ce.tgz ] || {
   echo "Downloading docker.."
@@ -19,5 +29,3 @@ if ! which docker 2>/dev/null; then
   sudo tar -C /usr/local -xzf docker-18.03.1-ce.tgz
 fi
 
-# sudo adduser docker --disabled-password
-# sudo sh -c "export PATH=$PATH:/usr/local/docker; /usr/local/docker/dockerd"
