@@ -23,22 +23,6 @@ if ! gpg -k | grep -q chinul; then
   gpg --import < /mnt/keys/chinul.key
 fi
 
-[ -e /tmp/docs_clear ] || {
-  echo "Creating /tmp/docs_clear.."
-  mkdir -p /tmp/docs_clear
-  gpg --out /tmp/docs.tar.gz --decrypt ~/docs/docs.tar.gz.asc
-  tar xzfv /tmp/docs.tar.gz
-  mv docs_clear /tmp/
-  srm /tmp/docs.tar.gz
-}
-
-# todo: step below requires ssh passphrase from docs_clear, should
-# look up automatically here.
-if ! ssh-add -L | grep -q chirhonul; then
-  echo "Adding SSH key.."
-  ssh-add /mnt/keys/chirhonul_github0_id_rsa
-fi
-
 [ -e ~/src ] || {
   echo "Creating symlinks to /mnt/bin directory.."
   ln -s /mnt/src ~/
@@ -58,6 +42,22 @@ fi
   echo "Creating symlink to conf directory.."
   ln -s /mnt/src/github.com/chirhonul/conf ~/
 }
+
+[ -e /tmp/docs_clear ] || {
+  echo "Creating /tmp/docs_clear.."
+  mkdir -p /tmp/docs_clear
+  gpg --out /tmp/docs.tar.gz --decrypt ~/src/github.com/chirhonul/docs/docs.tar.gz.asc
+  tar xzfv /tmp/docs.tar.gz
+  mv docs_clear /tmp/
+  srm /tmp/docs.tar.gz
+}
+
+# todo: step below requires ssh passphrase from docs_clear, should
+# look up automatically here.
+if ! ssh-add -L | grep -q chirhonul; then
+  echo "Adding SSH key.."
+  ssh-add /mnt/keys/chirhonul_github0_id_rsa
+fi
 
 [ -e ~/.gitconfig ] || {
   echo "Adding .gitconfig.."
