@@ -52,9 +52,10 @@ fi
   srm /tmp/docs.tar.gz
 }
 
-# todo: step below requires ssh passphrase from docs_clear, should
-# look up automatically here.
 if ! ssh-add -L | grep -q chirhonul; then
+  # todo: step below could be automated further.
+  echo "Decrypting github.com.txt.asc for SSH key.."
+  gpg --decrypt /mnt/docs_crypt/github.com.txt.asc
   echo "Adding SSH key.."
   ssh-add /mnt/keys/chirhonul_github0_id_rsa
 fi
