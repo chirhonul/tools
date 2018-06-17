@@ -7,7 +7,7 @@ set -euo pipefail
 cd /tmp
 
 echo "Creating docs.tar.gz archive.."
-tar czfv docs.tar.gz docs_clear/
+tar czfv docs.tar.gz ~/src/docs_clear/
 
 echo "Encrypting docs.tar.gz.."
 gpg --out ~/src/github.com/chirhonul/docs/docs.tar.gz.asc \
@@ -16,5 +16,5 @@ gpg --out ~/src/github.com/chirhonul/docs/docs.tar.gz.asc \
 echo "Deleting docs.tar.gz.."
 srm docs.tar.gz
 
-echo "Deleting /tmp/docs_clear.."
-srm -r /tmp/docs_clear
+echo "Deleting ~/src/docs_clear.."
+srm -r ~/src/docs_clear

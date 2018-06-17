@@ -28,11 +28,6 @@ fi
   ln -s /mnt/src ~/
 }
 
-[ -e ~/docs ] || {
-  echo "Creating symlinks to docs directory.."
-  ln -s /tmp/docs_clear ~/docs
-}
-
 [ -e ~/bin ] || {
   echo "Creating symlink to /mnt/bin directory.."
   ln -s /mnt/bin ~/
@@ -43,14 +38,20 @@ fi
   ln -s /mnt/src/github.com/chirhonul/conf ~/
 }
 
-[ -e /tmp/docs_clear ] || {
-  echo "Creating /tmp/docs_clear.."
-  mkdir -p /tmp/docs_clear
+[ -e ~/src/docs_clear ] || {
+  echo "Creating ~/src/docs_clear.."
+  mkdir -p ~/src/docs_clear
   gpg --out /tmp/docs.tar.gz --decrypt ~/src/github.com/chirhonul/docs/docs.tar.gz.asc
   tar xzfv /tmp/docs.tar.gz
-  mv docs_clear /tmp/
+  mv docs_clear ~/src/
   srm /tmp/docs.tar.gz
 }
+
+[ -e ~/docs ] || {
+  echo "Creating symlinks to docs directory.."
+  ln -s /tmp/docs_clear ~/docs
+}
+
 
 if ! ssh-add -L | grep -q chirhonul; then
   # todo: step below could be automated further.
