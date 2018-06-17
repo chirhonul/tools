@@ -7,7 +7,7 @@ set -euo pipefail
   echo "Installing packages.."
   sudo bash -c " \
     apt-get -y update && \
-    apt-get -y install adduser gcc libc6-dev tmux"
+    apt-get -y install adduser gcc ncdu nmon libc6-dev tmux"
   touch /tmp/.packages_installed_marker
 }
 
@@ -42,6 +42,7 @@ fi
   echo "Creating ~/src/docs_clear.."
   mkdir -p ~/src/docs_clear
   gpg --out /tmp/docs.tar.gz --decrypt ~/src/github.com/chirhonul/docs/docs.tar.gz.asc
+  # todo: need to strip leading parts of path either here or when creating docs.tar.gz in lock_docs.sh..
   tar xzfv /tmp/docs.tar.gz
   mv docs_clear ~/src/
   srm /tmp/docs.tar.gz
@@ -49,7 +50,7 @@ fi
 
 [ -e ~/docs ] || {
   echo "Creating symlinks to docs directory.."
-  ln -s /tmp/docs_clear ~/docs
+  ln -s /src/docs_clear ~/docs
 }
 
 
