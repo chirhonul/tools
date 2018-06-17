@@ -72,15 +72,15 @@ fi
   cp /mnt/known_hosts ~/.ssh/
 }
 
-[ -e ~/src/go1.10.2.linux-amd64.tar.gz ] || {
+[ -e /mnt/bin/go1.10.2.linux-amd64.tar.gz ] || {
   echo "Fetching go installation.."
-  torify curl -vLo /mnt/src/go1.10.2.linux-amd64.tar.gz https://golang.org/dl/go1.10.2.linux-amd64.tar.gz
-  echo "4b677d698c65370afa33757b6954ade60347aaca310ea92a63ed717d7cb0c2ff /mnt/src/go1.10.2.linux-amd64.tar.gz" | sha256sum -c -
+  torify curl -vLo /mnt/bin/go1.10.2.linux-amd64.tar.gz https://golang.org/dl/go1.10.2.linux-amd64.tar.gz
+  echo "4b677d698c65370afa33757b6954ade60347aaca310ea92a63ed717d7cb0c2ff /mnt/bin/go1.10.2.linux-amd64.tar.gz" | sha256sum -c -
 }
 
 if ! go version 2>/dev/null; then
   echo "Installing go.."
-  sudo tar -C /usr/local -xzf /mnt/src/go1.10.2.linux-amd64.tar.gz
+  sudo tar -C /usr/local -xzf /mnt/bin/go1.10.2.linux-amd64.tar.gz
 fi
 
 [ -e /mnt/bin/google-chrome-stable_current_amd64.deb ] || {
