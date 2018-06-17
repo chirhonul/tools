@@ -24,4 +24,5 @@ if ! which java 2 >/dev/null; then
   }
 fi
 
-# todo: may need to do some JCE policy stuff here. 
+# todo: may need to do some JCE policy stuff here.
+# todo: install intellij and gradle too?
