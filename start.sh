@@ -42,8 +42,7 @@ fi
   echo "Creating ~/src/docs_clear.."
   mkdir -p ~/src/docs_clear
   gpg --out /tmp/docs.tar.gz --decrypt ~/src/github.com/chirhonul/docs/docs.tar.gz.asc
-  # todo: need to strip leading parts of path either here or when creating docs.tar.gz in lock_docs.sh..
-  tar xzfv /tmp/docs.tar.gz
+  tar xzfv /tmp/docs.tar.gz --strip-components=3
   mv docs_clear ~/src/
   srm /tmp/docs.tar.gz
 }
