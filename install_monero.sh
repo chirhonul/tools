@@ -20,6 +20,7 @@ if ! grep -q 'HiddenServicePort 18081' /etc/tor/torrc; then
     echo "HiddenServicePort 18081 127.0.0.1:18081" >> /etc/tor/torrc && \
     systemctl restart tor && \
     echo "Tor hidden service:" && \
+    sleep 5 && \ # hack to allow async systemd restart above to take effect
     cat /var/lib/tor/hidden_service/hostname'
 fi
 
