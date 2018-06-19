@@ -18,9 +18,9 @@ if ! which java 2 >/dev/null; then
   [ -d /usr/lib/jvm/ ] || {
     sudo bash -c " \
       mkdir -p /usr/lib/jvm/ && \
-      cp jdk-8u131-linux-x64.tar.gz /usr/lib/jvm/ && \ 
+      cp jdk-8u172-linux-x64.tar.gz /usr/lib/jvm/ && \ 
       cd /usr/lib/jvm/ && \
-      tar xzfv jdk-8u131-linux-x64.tar.gz && \
+      tar xzfv jdk-8u172-linux-x64.tar.gz && \
       chown -R amnesia:amnesia /usr/lib/jvm/" # todo: less wide ownership of dir would be nice.
   }
 fi
