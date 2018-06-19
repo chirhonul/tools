@@ -49,7 +49,7 @@ fi
 
 [ -e ~/docs ] || {
   echo "Creating symlinks to docs directory.."
-  ln -s /src/docs_clear ~/docs
+  ln -s /mnt/src/docs_clear ~/docs
 }
 
 
