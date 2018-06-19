@@ -23,6 +23,12 @@ if ! gpg -k | grep -q chinul; then
   gpg --import < /mnt/keys/chinul.key
 fi
 
+[ -e /etc/amnesia-env ] || {
+  sudo bash -c ' \
+    echo "BIN_PATH=/mnt/bin/" > /etc/amnesia-env && \
+    chown amnesia:amnesia /etc/amnesia-env'
+}
+
 [ -e ~/src ] || {
   echo "Creating symlinks to /mnt/bin directory.."
   ln -s /mnt/src ~/
@@ -52,7 +58,6 @@ fi
   ln -s /mnt/src/docs_clear ~/docs
 }
 
-
 if ! ssh-add -L | grep -q chirhonul; then
   # todo: step below could be automated further.
   echo "Decrypting github.com.txt.asc for SSH key.."
@@ -71,6 +76,12 @@ fi
   mkdir -p ~/.ssh
   chmod 700 ~/.ssh/
   cp /mnt/known_hosts ~/.ssh/
+}
+
+[ -e ~/.ssh/config ] || {
+  echo "Copying ~/.ssh/config.."
+  mkdir -p ~/.ssh
+  cp ~/conf/ssh_config ~/.ssh/config
 }
 
 [ -e /mnt/bin/go1.10.2.linux-amd64.tar.gz ] || {
