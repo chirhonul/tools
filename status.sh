@@ -10,3 +10,9 @@ for d in ~/src/github.com/chirhonul/*; do
   git status ${d}
   echo "----------------------------------------------------------------"
 done
+
+for f in ~/docs/*; do
+  echo "UNLOCKED DOC:"
+  echo "${f}"
+  echo
+done
