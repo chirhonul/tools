@@ -4,7 +4,8 @@
 #
 set -eu
 
-cd /mnt/bin
+source /etc/amnesia-env
+cd ${BIN_PATH}
 
 [ -e jdk-8u172-linux-x64.tar.gz ] || {
   echo "Downloading java.."
