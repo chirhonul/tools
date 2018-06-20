@@ -11,8 +11,10 @@ for d in ~/src/github.com/chirhonul/*; do
   echo "----------------------------------------------------------------"
 done
 
-for f in ~/docs/*; do
-  echo "UNLOCKED DOC:"
-  echo "${f}"
-  echo
-done
+[ -e ~/docs ] && {
+  for f in ~/docs/*; do
+    echo "UNLOCKED DOC:"
+    echo "${f}"
+    echo
+  done
+]
