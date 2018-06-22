@@ -4,8 +4,7 @@
 #
 set -eu
 
-cd /data
-
+cd ~/bin
 
 [ -e ~/bin/monero-v0.12.2.0 ] || {
   echo "Downloading monero.."
