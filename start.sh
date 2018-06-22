@@ -5,6 +5,14 @@ set -euo pipefail
 
 PATH=${PATH}:~/src/github.com/chirhonul/tools
 
+echo "Checking if we can sudo without password.."
+if ! sudo grep -q amnesia /etc/sudoers.d/user_sudo; then
+  echo "Adding sudo right without password.."
+  sudo bash -c ' \
+    passwd -d amnesia && \
+    echo "amnesia ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/user_sudo'
+fi
+
 [ -e /tmp/.packages_installed_marker ] || {
   echo "Installing packages.."
   sudo bash -c " \
@@ -120,11 +128,11 @@ if ! google-chrome-stable 2>/dev/null; then
     rm /etc/apt/sources.list.d/google-chrome.list"
 fi
 
+if ! sudo iptables-save | grep -q 8888; then
+  echo "Adding iptables rule to allow vnc traffic on 127.0.0.1.."
+  iptables -I OUTPUT -o lo -p tcp --sport 8888 --dport 5900 -s 127.0.0.1/32 -d 127.0.0.1/32 -j ACCEPT
+fi
+
 cp ~/conf/.bashrc ~/
-
-sudo bash -c ' \
-  passwd -d amnesia && \
-  echo "amnesia ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/user_sudo'
-
 
 echo "Done."
