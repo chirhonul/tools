@@ -66,6 +66,12 @@ if ! ssh-add -L | grep -q chirhonul; then
   ssh-add /mnt/keys/chirhonul_github0_id_rsa
 fi
 
+if ! ssh-add -L | grep -q s0_id_rsa; then
+  echo "Adding SSH key for s0.."
+  cat ~/docs/s0_id_rsa_pass.txt
+  ssh-add /mnt/keys/s0_id_rsa
+fi
+
 [ -e ~/.gitconfig ] || {
   echo "Adding .gitconfig.."
   cp ~/conf/.gitconfig ~/
@@ -74,14 +80,13 @@ fi
 [ -e ~/.ssh/known_hosts ] || {
   echo "Copying ~/.ssh/known_hosts.."
   mkdir -p ~/.ssh
-  chmod 700 ~/.ssh/
   cp /mnt/known_hosts ~/.ssh/
 }
 
 [ -e ~/.ssh/config ] || {
   echo "Copying ~/.ssh/config.."
-  mkdir -p ~/.ssh
   cp ~/conf/ssh_config ~/.ssh/config
+  chmod 400 ~/.ssh/config
 }
 
 [ -e /mnt/bin/go1.10.2.linux-amd64.tar.gz ] || {
@@ -118,5 +123,10 @@ if ! google-chrome-stable 2>/dev/null; then
 fi
 
 cp ~/conf/.bashrc ~/
+
+sudo bash -c ' \
+  passwd -d amnesia && \
+  echo "amnesia ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/user_sudo'
+
 
 echo "Done."
