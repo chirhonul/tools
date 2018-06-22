@@ -130,7 +130,7 @@ fi
 
 if ! sudo iptables-save | grep -q 8888; then
   echo "Adding iptables rule to allow vnc traffic on 127.0.0.1.."
-  iptables -I OUTPUT -o lo -p tcp --sport 8888 --dport 5900 -s 127.0.0.1/32 -d 127.0.0.1/32 -j ACCEPT
+  iptables -I OUTPUT -o lo -p tcp --dport 8888 -s 127.0.0.1/32 -d 127.0.0.1/32 -j ACCEPT
 fi
 
 cp ~/conf/.bashrc ~/
