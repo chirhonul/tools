@@ -3,11 +3,13 @@
 #
 set -euo pipefail
 
+PATH=${PATH}:~/src/github.com/chirhonul/tools
+
 [ -e /tmp/.packages_installed_marker ] || {
   echo "Installing packages.."
   sudo bash -c " \
     apt-get -y update && \
-    apt-get -y install adduser gcc ncdu nmon libc6-dev tmux"
+    apt-get -y install adduser expect gcc ncdu nmon libc6-dev tmux"
   touch /tmp/.packages_installed_marker
 }
 
@@ -59,17 +61,13 @@ fi
 }
 
 if ! ssh-add -L | grep -q chirhonul; then
-  # todo: step below could be automated further.
-  echo "Decrypting github.com.txt.asc for SSH key.."
-  gpg --decrypt /mnt/docs_crypt/github.com.txt.asc
-  echo "Adding SSH key.."
-  ssh-add /mnt/keys/chirhonul_github0_id_rsa
+  echo "Adding SSH key for github.."
+  ssh_add_pass.sh /mnt/keys/chirhonul_github0_id_rsa ~/docs/chirhonul_github0_id_rsa_pass.txt
 fi
 
 if ! ssh-add -L | grep -q s0_id_rsa; then
   echo "Adding SSH key for s0.."
-  cat ~/docs/s0_id_rsa_pass.txt
-  ssh-add /mnt/keys/s0_id_rsa
+  ssh_add_pass.sh /mnt/keys/s0_id_rsa ~/docs/s0_id_rsa_pass.txt
 fi
 
 [ -e ~/.gitconfig ] || {
