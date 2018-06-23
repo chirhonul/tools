@@ -17,4 +17,4 @@ done
     echo "${f}"
     echo
   done
-]
+}
