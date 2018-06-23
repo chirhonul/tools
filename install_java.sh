@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # Install the Oracle flavor of Java.
 #
