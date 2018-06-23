@@ -34,6 +34,7 @@ if ! gpg -k | grep -q chinul; then
 fi
 
 [ -e /etc/amnesia-env ] || {
+  echo "Creating /etc/amnesia-env.."
   sudo bash -c ' \
     echo "BIN_PATH=/mnt/bin/" > /etc/amnesia-env && \
     chown amnesia:amnesia /etc/amnesia-env'
