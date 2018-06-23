@@ -37,7 +37,7 @@ fi
   echo "Creating /etc/amnesia-env.."
   sudo bash -c ' \
     echo "BIN_PATH=/mnt/bin/" > /etc/amnesia-env && \
-    chown amnesia:amnesia /etc/amnesia-env'
+    chown $(id -u amnesia):$(id -g amnesia) /etc/amnesia-env'
 }
 
 [ -e ~/src ] || {
