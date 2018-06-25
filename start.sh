@@ -136,4 +136,10 @@ fi
 
 cp ~/conf/.bashrc ~/
 
+# Copy the github.com/rsc/2fa file.
+[ -e ~/.2fa ] || {
+  echo "Adding .2fa file.."
+  cp -v ~/docs/.2fa ~/
+}
+
 echo "Done."
