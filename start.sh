@@ -13,11 +13,57 @@ echo "Checking if we can sudo without password.."
     echo "amnesia ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/user_sudo'
 }
 
+install_java() {
+  cd ~/bin
+  if which java 2>&1 >/dev/null; then
+    echo "Java is already installed:"
+    echo "$(javac -version)"
+    return 0
+  fi
+  [ -d /usr/lib/jvm/ ] || {
+    echo "Creating /usr/lib/jvm/.."
+    sudo mkdir -p /usr/lib/jvm/
+  }
+  uid=$(id -u)
+  gid=$(id -g)
+  echo "Installing java for user:group ${uid}:${gid}.."
+  sudo bash -c " \
+    cp jdk-8u172-linux-x64.tar.gz /usr/lib/jvm/ && \
+    cd /usr/lib/jvm/ && \
+    tar xzfv jdk-8u172-linux-x64.tar.gz && \
+    chown -R ${uid}:${gid} /usr/lib/jvm/" # TODO: less wide ownership of dir would be nice.
+  echo "Java has been installed. You may want to add it to your PATH and specify JAVA_HOME:"
+  echo 'echo export PATH=${PATH}:/usr/lib/jvm/jdk1.8.0_172/bin >> ~/.bashrc'
+  echo 'echo export JAVA_HOME=/usr/lib/jvm/jdk1.8.0_172 >> ~/.bashrc'
+}
+
+install_gradle() {
+  cd ~/bin/
+  if which gradle 2>&1 >/dev/null; then
+    echo "Gradle is already installed:"
+    echo "$(gradle -version)"
+    return 0
+  fi
+
+  [ -d /opt/gradle/gradle-4.6 ] && {
+    echo "Gradle is already installed:"
+    echo "$(gradle -version)"
+    echo "However it is not on PATH. You may want to add it to your PATH:"
+    echo 'echo export PATH=$PATH:/opt/gradle/gradle-4.6/bin >> ~/.bashrc'
+    return 0
+  }
+  echo "Installing gradle.."
+  sudo bash -c " \
+    mkdir -p /opt/gradle && \
+    unzip -d /opt/gradle/ gradle-4.6-bin.zip && \
+    chown -R $(id -u amnesia):$(id -g amnesia)"
+}
+
 [ -e /tmp/.packages_installed_marker ] || {
   echo "Installing packages.."
   sudo bash -c " \
     apt-get -y update && \
-    apt-get -y install adduser expect gcc ncdu nmon libc6-dev tmux"
+    apt-get -y install adduser expect gcc htop ncdu nmon mr libc6-dev tmux"
   touch /tmp/.packages_installed_marker
 }
 
@@ -69,31 +115,14 @@ fi
   ln -s /mnt/src/docs_clear ~/docs
 }
 
-if ! ssh-add -L | grep -q chirhonul; then
-  echo "Adding SSH key for github.."
-  ssh_add_pass.sh /mnt/keys/chirhonul_github0_id_rsa ~/docs/chirhonul_github0_id_rsa_pass.txt
-fi
-
-if ! ssh-add -L | grep -q s0_id_rsa; then
-  echo "Adding SSH key for s0.."
-  ssh_add_pass.sh /mnt/keys/s0_id_rsa ~/docs/s0_id_rsa_pass.txt
-fi
-
 [ -e ~/.gitconfig ] || {
   echo "Adding .gitconfig.."
   cp ~/conf/.gitconfig ~/
 }
 
-[ -e ~/.ssh/known_hosts ] || {
-  echo "Copying ~/.ssh/known_hosts.."
-  mkdir -p ~/.ssh
-  cp /mnt/known_hosts ~/.ssh/
-}
-
-[ -e ~/.ssh/config ] || {
-  echo "Copying ~/.ssh/config.."
-  cp ~/conf/ssh_config ~/.ssh/config
-  chmod 400 ~/.ssh/config
+[ -e ~/.ssh ] || {
+  echo "Copying ~/.ssh config.."
+  cp -v /mnt/.ssh ~/
 }
 
 [ -e /mnt/bin/go1.10.2.linux-amd64.tar.gz ] || {
@@ -134,14 +163,19 @@ if ! sudo iptables-save | grep -q 8888; then
   sudo iptables -I OUTPUT -o lo -p tcp --sport 8888 --dport 5900 -s 127.0.0.1/32 -d 127.0.0.1/32 -j ACCEPT
   sudo iptables -I OUTPUT -o lo -p tcp --sport 8889 --dport 5900 -s 127.0.0.1/32 -d 127.0.0.1/32 -j ACCEPT
   sudo iptables -I OUTPUT -o lo -p tcp --sport 8890 --dport 5900 -s 127.0.0.1/32 -d 127.0.0.1/32 -j ACCEPT
+  sudo iptables -I OUTPUT -o lo -p tcp -s 127.0.0.1/32 -d 127.0.0.1/32 -j ACCEPT
 fi
 
 cp ~/conf/.bashrc ~/
+cp -r ~/conf/.IdeaIC2018.1 ~/
 
 # Copy the github.com/rsc/2fa file.
 [ -e ~/.2fa ] || {
   echo "Adding .2fa file.."
   cp -v ~/docs/.2fa ~/
 }
+
+install_java
+install_gradle
 
 echo "Done."
