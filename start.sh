@@ -167,7 +167,7 @@ if ! sudo iptables-save | grep -q 8888; then
 fi
 
 cp ~/conf/.bashrc ~/
-cp -r ~/docs/.IdeaIC2018.1 ~/
+cp -r /media/idea/.IdeaIC2018.1 ~/
 
 # Copy the github.com/rsc/2fa file.
 [ -e ~/.2fa ] || {
