@@ -122,7 +122,7 @@ fi
 
 [ -e ~/.ssh ] || {
   echo "Copying ~/.ssh config.."
-  cp -v /mnt/.ssh ~/
+  cp -v ~/docs/.ssh ~/
 }
 
 [ -e /mnt/bin/go1.10.2.linux-amd64.tar.gz ] || {
@@ -167,7 +167,7 @@ if ! sudo iptables-save | grep -q 8888; then
 fi
 
 cp ~/conf/.bashrc ~/
-cp -r ~/conf/.IdeaIC2018.1 ~/
+cp -r ~/docs/.IdeaIC2018.1 ~/
 
 # Copy the github.com/rsc/2fa file.
 [ -e ~/.2fa ] || {
