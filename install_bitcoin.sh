@@ -4,10 +4,8 @@
 #
 set -eu
 
-cd /data
-
-
-[ -e ~/bin/bitcoin-0.16.1-x86_64-linux-gnu.tar.gz ] || {
+cd ~/bin
+[ -e bitcoin-0.16.1-x86_64-linux-gnu.tar.gz ] || {
   echo "Downloading bitcoin.."
   torify wget https://bitcoincore.org/bin/bitcoin-core-0.16.1/bitcoin-0.16.1-x86_64-linux-gnu.tar.gz
   # note: checksum below fetched from gpg-signed https://bitcoincore.org/bin/bitcoin-core-0.16.1/SHA256SUMS.asc
@@ -16,7 +14,7 @@ cd /data
 
 [ -d ~/.bitcoin ] || {
   echo "Copying .bitcoin.."
-  cp ~/conf/.bitcoin ~/
+  cp -r ~/conf/.bitcoin ~/
 }
 
 # todo: bitcoin-cli can't connect since tcp/8332 to localhost is blocked by iptables:
