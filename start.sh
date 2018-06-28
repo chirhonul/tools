@@ -56,7 +56,12 @@ install_gradle() {
   sudo bash -c " \
     mkdir -p /opt/gradle && \
     unzip -d /opt/gradle/ gradle-4.6-bin.zip && \
-    chown -R $(id -u amnesia):$(id -g amnesia)"
+    chown -R $(id -u amnesia):$(id -g amnesia) /opt/gradle"
+
+  [ -e ~/.gradle ] || {
+    echo "Copying back gradle cache.."
+    cp -vr /internal/data/.gradle ~/
+  }
 }
 
 [ -e /tmp/.packages_installed_marker ] || {
@@ -122,7 +127,7 @@ fi
 
 [ -e ~/.ssh ] || {
   echo "Copying ~/.ssh config.."
-  cp -v ~/docs/.ssh ~/
+  cp -vr ~/docs/.ssh ~/
 }
 
 [ -e /mnt/bin/go1.10.2.linux-amd64.tar.gz ] || {
