@@ -13,57 +13,6 @@ echo "Checking if we can sudo without password.."
     echo "amnesia ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/user_sudo'
 }
 
-install_java() {
-  cd ~/bin
-  if which java 2>&1 >/dev/null; then
-    echo "Java is already installed:"
-    echo "$(javac -version)"
-    return 0
-  fi
-  [ -d /usr/lib/jvm/ ] || {
-    echo "Creating /usr/lib/jvm/.."
-    sudo mkdir -p /usr/lib/jvm/
-  }
-  uid=$(id -u)
-  gid=$(id -g)
-  echo "Installing java for user:group ${uid}:${gid}.."
-  sudo bash -c " \
-    cp jdk-8u172-linux-x64.tar.gz /usr/lib/jvm/ && \
-    cd /usr/lib/jvm/ && \
-    tar xzfv jdk-8u172-linux-x64.tar.gz && \
-    chown -R ${uid}:${gid} /usr/lib/jvm/" # TODO: less wide ownership of dir would be nice.
-  echo "Java has been installed. You may want to add it to your PATH and specify JAVA_HOME:"
-  echo 'echo export PATH=${PATH}:/usr/lib/jvm/jdk1.8.0_172/bin >> ~/.bashrc'
-  echo 'echo export JAVA_HOME=/usr/lib/jvm/jdk1.8.0_172 >> ~/.bashrc'
-}
-
-install_gradle() {
-  cd ~/bin/
-  if which gradle 2>&1 >/dev/null; then
-    echo "Gradle is already installed:"
-    echo "$(gradle -version)"
-    return 0
-  fi
-
-  [ -d /opt/gradle/gradle-4.6 ] && {
-    echo "Gradle is already installed:"
-    echo "$(gradle -version)"
-    echo "However it is not on PATH. You may want to add it to your PATH:"
-    echo 'echo export PATH=$PATH:/opt/gradle/gradle-4.6/bin >> ~/.bashrc'
-    return 0
-  }
-  echo "Installing gradle.."
-  sudo bash -c " \
-    mkdir -p /opt/gradle && \
-    unzip -d /opt/gradle/ gradle-4.6-bin.zip && \
-    chown -R $(id -u amnesia):$(id -g amnesia) /opt/gradle"
-
-  [ -e ~/.gradle ] || {
-    echo "Copying back gradle cache.."
-    cp -vr /internal/data/.gradle ~/
-  }
-}
-
 [ -e /tmp/.packages_installed_marker ] || {
   echo "Installing packages.."
   sudo bash -c " \
@@ -150,15 +99,11 @@ if ! sudo iptables-save | grep -q 8888; then
 fi
 
 cp ~/conf/.bashrc ~/
-cp -r /media/idea/.IdeaIC2018.1 ~/
 
 # Copy the github.com/rsc/2fa file.
 [ -e ~/.2fa ] || {
   echo "Adding .2fa file.."
   cp -v ~/docs/.2fa ~/
 }
-
-install_java
-install_gradle
 
 echo "Done."
