@@ -17,7 +17,7 @@ echo "Checking if we can sudo without password.."
   echo "Installing packages.."
   sudo bash -c " \
     apt-get -y update && \
-    apt-get -y install adduser expect gcc htop ncdu nmon mr libc6-dev tmux"
+    apt-get -y install adduser expect gcc htop ncdu nmon mr libc6-dev tmux vim"
   touch /tmp/.packages_installed_marker
 }
 
