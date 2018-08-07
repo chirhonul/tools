@@ -17,7 +17,7 @@ echo "Checking if we can sudo without password.."
   echo "Installing packages.."
   sudo bash -c " \
     apt-get -y update && \
-    apt-get -y install adduser expect gcc htop ncdu nmon mr libc6-dev tmux vim"
+    apt-get -y install adduser expect htop ncdu nmon mr tmux vim"
   touch /tmp/.packages_installed_marker
 }
 
@@ -26,6 +26,7 @@ echo "Checking if we can sudo without password.."
   sudo bash -c " \
     cryptsetup open --type plain /dev/disk/by-id/usb-PNY_USB_2.0_FD_0400000000013503-0:0-part3 unlocked && \
     mount /dev/mapper/unlocked /mnt"
+  # todo: mount can fail if bad passphrase was given, should cryptsetup close and retry in that case
 }
 
 if ! gpg -k | grep -q chinul; then
