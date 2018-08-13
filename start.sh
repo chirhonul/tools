@@ -13,14 +13,6 @@ echo "Checking if we can sudo without password.."
     echo "amnesia ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/user_sudo'
 }
 
-[ -e /tmp/.packages_installed_marker ] || {
-  echo "Installing packages.."
-  sudo bash -c " \
-    apt-get -y update && \
-    apt-get -y install adduser expect htop ncdu nmon mr tmux vim"
-  touch /tmp/.packages_installed_marker
-}
-
 [ -e /dev/mapper/unlocked ] || {
   echo "Unlocking LUKS volume.."
   sudo bash -c " \
@@ -78,6 +70,14 @@ fi
 [ -e ~/.ssh ] || {
   echo "Copying ~/.ssh config.."
   cp -vr ~/docs/.ssh ~/
+}
+
+[ -e /tmp/.packages_installed_marker ] || {
+  echo "Installing packages.."
+  sudo bash -c " \
+    apt-get -y update && \
+    apt-get -y install adduser expect htop ncdu nmon mr tmux vim"
+  touch /tmp/.packages_installed_marker
 }
 
 [ -e /mnt/bin/go1.10.2.linux-amd64.tar.gz ] || {
