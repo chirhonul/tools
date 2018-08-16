@@ -9,6 +9,7 @@ cd /tmp
 echo "Creating docs.tar.gz archive.."
 tar czfv docs.tar.gz ~/src/docs_clear/
 
+# todo(chirhonul): ignore .swp files like ~src/docs_clear/.ssh/.config.swp here
 echo "Encrypting docs.tar.gz.."
 gpg --out ~/src/github.com/chirhonul/docs/docs.tar.gz.asc \
     --armor --encrypt --recipient chinul docs.tar.gz
