@@ -107,4 +107,14 @@ cp ~/conf/.bashrc ~/
   cp -v ~/docs/.2fa ~/
 }
 
+echo "Decrypting mail credentials.."
+gpg --decrypt ~/docs/mail.txt.asc
+
+echo "Decrypting Slack credentials.."
+gpg --decrypt ~/docs/bisq_slack_pw.txt.asc
+
+echo "Creating 2FA code for Slack credentials:"
+2fa chinul_bisq_slack
+
+echo
 echo "Done."
