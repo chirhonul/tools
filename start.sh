@@ -113,6 +113,7 @@ gpg --decrypt ~/docs/mail.txt.asc
 echo "Decrypting Slack credentials.."
 gpg --decrypt ~/docs/bisq_slack_pw.txt.asc
 
+# todo: the 2fa binary is not on PATH yet here..
 echo "Creating 2FA code for Slack credentials:"
 2fa chinul_bisq_slack
 
