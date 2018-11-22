@@ -72,14 +72,6 @@ fi
   cp -vr ~/docs/.ssh ~/
 }
 
-[ -e /tmp/.packages_installed_marker ] || {
-  echo "Installing packages.."
-  sudo bash -c " \
-    apt-get -y update && \
-    apt-get -y install adduser expect htop ncdu nmon mr tmux vim"
-  touch /tmp/.packages_installed_marker
-}
-
 [ -e /mnt/bin/go1.10.2.linux-amd64.tar.gz ] || {
   echo "Fetching go installation.."
   torify curl -vLo /mnt/bin/go1.10.2.linux-amd64.tar.gz https://golang.org/dl/go1.10.2.linux-amd64.tar.gz
@@ -113,9 +105,18 @@ gpg --decrypt ~/docs/mail.txt.asc
 echo "Decrypting Slack credentials.."
 gpg --decrypt ~/docs/bisq_slack_pw.txt.asc
 
-# todo: the 2fa binary is not on PATH yet here..
 echo "Creating 2FA code for Slack credentials:"
-2fa chinul_bisq_slack
+source /etc/amnesia-env
+${BIN_PATH}/2fa chinul_bisq_slack
+
+[ -e /tmp/.packages_installed_marker ] || {
+  echo "Installing packages.."
+  sudo bash -c " \
+    apt-get -y update && \
+    apt-get -y install adduser expect htop ncdu nmon mr tmux vim"
+  touch /tmp/.packages_installed_marker
+}
+
 
 echo
 echo "Done."
