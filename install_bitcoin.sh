@@ -5,11 +5,11 @@
 set -eu
 
 cd ~/bin
-[ -e bitcoin-0.16.1-x86_64-linux-gnu.tar.gz ] || {
+[ -e bitcoin-0.17.0-x86_64-linux-gnu.tar.gz ] || {
   echo "Downloading bitcoin.."
-  torify wget https://bitcoincore.org/bin/bitcoin-core-0.16.1/bitcoin-0.16.1-x86_64-linux-gnu.tar.gz
-  # note: checksum below fetched from gpg-signed https://bitcoincore.org/bin/bitcoin-core-0.16.1/SHA256SUMS.asc
-  echo "10b31d17351ff4c7929cf955e4d24a2398b0ce91509f707faf8596940c12432a  bitcoin-0.16.1-x86_64-linux-gnu.tar.gz" | sha256sum -c -
+  torify wget https://bitcoincore.org/bin/bitcoin-core-0.17.0/bitcoin-0.17.0-x86_64-linux-gnu.tar.gz
+  # note: checksum below fetched from gpg-signed https://bitcoincore.org/bin/bitcoin-core-0.17.0/SHA256SUMS.asc
+  echo "9d6b472dc2aceedb1a974b93a3003a81b7e0265963bd2aa0acdcb17598215a4f  bitcoin-0.16.1-x86_64-linux-gnu.tar.gz" | sha256sum -c -
 }
 
 [ -d ~/.bitcoin ] || {
