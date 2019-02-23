@@ -1,6 +1,7 @@
 #
 # Script for setting up newly booted Tails instance with packages and configuration.
 #
+
 set -euo pipefail
 
 PATH=${PATH}:~/src/github.com/chirhonul/tools
@@ -34,18 +35,18 @@ fi
 }
 
 [ -e ~/src ] || {
-  echo "Creating symlinks to /mnt/bin directory.."
-  ln -s /mnt/src ~/
+  echo "Creating symlinks to ~/src directory.."
+  ln -s /live/persistence/TailsData_unlocked/Persistent/mnt/src/ ~/
 }
 
 [ -e ~/bin ] || {
-  echo "Creating symlink to /mnt/bin directory.."
-  ln -s /mnt/bin ~/
+  echo "Creating symlink to ~/bin directory.."
+  ln -s /live/persistence/TailsData_unlocked/Persistent/mnt/bin/ ~/
 }
 
 [ -e ~/conf ] || {
   echo "Creating symlink to conf directory.."
-  ln -s /mnt/src/github.com/chirhonul/conf ~/
+  ln -s /live/persistence/TailsData_unlocked/Persistent/mnt/src/github.com/chirhonul/conf ~/
 }
 
 [ -e ~/src/docs_clear ] || {
