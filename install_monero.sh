@@ -6,10 +6,10 @@ set -eu
 
 cd ~/bin
 
-[ -e ~/bin/monero-v0.12.2.0 ] || {
+[ -e ~/bin/monero-v0.13.0.4 ] || {
   echo "Downloading monero.."
   torify wget https://downloads.getmonero.org/cli/linux64
-  echo "cb97e3f8b700a81e1b0f1a77509eefbfb415aa6013f23685f8933b559309c580  ~/bin/monero-v0.12.2.0.tar.gz" | sha256sum -c -
+  echo "693e1a0210201f65138ace679d1ab1928aca06bb6e679c20d8b4d2d8717e50d6  ~/bin/monero-linux-x64-v0.13.0.4.tar.bz2" | sha256sum -c -
 }
 
 if ! grep -q 'HiddenServicePort 18081' /etc/tor/torrc; then
