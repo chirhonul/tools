@@ -68,9 +68,9 @@ fi
   cp ~/conf/.gitconfig ~/
 }
 
-[ -e ~/.ssh ] || {
+[ -e ~/.ssh/config ] || {
   echo "Copying ~/.ssh config.."
-  cp -vr ~/docs/.ssh ~/
+  cp -vr ~/docs/.ssh/config ~/.ssh/
 }
 
 [ -e /mnt/bin/go1.10.2.linux-amd64.tar.gz ] || {
