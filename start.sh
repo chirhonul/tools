@@ -14,39 +14,36 @@ echo "Checking if we can sudo without password.."
     echo "amnesia ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/user_sudo'
 }
 
-[ -e /dev/mapper/unlocked ] || {
-  echo "Unlocking LUKS volume.."
-  sudo bash -c " \
-    cryptsetup open --type plain /dev/disk/by-id/usb-PNY_USB_2.0_FD_0400000000013503-0:0-part3 unlocked && \
-    mount /dev/mapper/unlocked /mnt"
-  # todo: mount can fail if bad passphrase was given, should cryptsetup close and retry in that case
+[ -e ~/keys ] || {
+  echo "Creating symlinks to ~/keys directory.."
+  ln -s /live/persistence/TailsData_unlocked/Persistent/keys ~/
 }
 
 if ! gpg -k | grep -q chinul; then
   echo "Adding GPG key.."
-  gpg --import < /mnt/keys/chinul.key
+  gpg --import < ~/keys/chinul.key
 fi
 
 [ -e /etc/amnesia-env ] || {
   echo "Creating /etc/amnesia-env.."
   sudo bash -c ' \
-    echo "BIN_PATH=/mnt/bin/" > /etc/amnesia-env && \
+    echo "BIN_PATH=/live/persistence/TailsData_unlocked/Persistent/bin/" > /etc/amnesia-env && \
     chown $(id -u amnesia):$(id -g amnesia) /etc/amnesia-env'
 }
 
 [ -e ~/src ] || {
   echo "Creating symlinks to ~/src directory.."
-  ln -s /live/persistence/TailsData_unlocked/Persistent/mnt/src/ ~/
+  ln -s /live/persistence/TailsData_unlocked/Persistent/src/ ~/
 }
 
 [ -e ~/bin ] || {
   echo "Creating symlink to ~/bin directory.."
-  ln -s /live/persistence/TailsData_unlocked/Persistent/mnt/bin/ ~/
+  ln -s /live/persistence/TailsData_unlocked/Persistent/bin/ ~/
 }
 
 [ -e ~/conf ] || {
   echo "Creating symlink to conf directory.."
-  ln -s /live/persistence/TailsData_unlocked/Persistent/mnt/src/github.com/chirhonul/conf ~/
+  ln -s /live/persistence/TailsData_unlocked/Persistent/src/github.com/chirhonul/conf ~/
 }
 
 [ -e ~/src/docs_clear ] || {
@@ -60,7 +57,7 @@ fi
 
 [ -e ~/docs ] || {
   echo "Creating symlinks to docs directory.."
-  ln -s /mnt/src/docs_clear ~/docs
+  ln -s ~/src/docs_clear ~/docs
 }
 
 [ -e ~/.gitconfig ] || {
@@ -68,20 +65,20 @@ fi
   cp ~/conf/.gitconfig ~/
 }
 
-[ -e ~/.ssh/config ] || {
+[ -e ~/.ssh ] || {
   echo "Copying ~/.ssh config.."
-  cp -vr ~/docs/.ssh/config ~/.ssh/
+  cp -vr ~/docs/.ssh ~/
 }
 
-[ -e /mnt/bin/go1.10.2.linux-amd64.tar.gz ] || {
+[ -e ~/bin/go1.10.2.linux-amd64.tar.gz ] || {
   echo "Fetching go installation.."
-  torify curl -vLo /mnt/bin/go1.10.2.linux-amd64.tar.gz https://golang.org/dl/go1.10.2.linux-amd64.tar.gz
-  echo "4b677d698c65370afa33757b6954ade60347aaca310ea92a63ed717d7cb0c2ff /mnt/bin/go1.10.2.linux-amd64.tar.gz" | sha256sum -c -
+  torify curl -vLo ~/bin/go1.10.2.linux-amd64.tar.gz https://golang.org/dl/go1.10.2.linux-amd64.tar.gz
+  echo "4b677d698c65370afa33757b6954ade60347aaca310ea92a63ed717d7cb0c2ff ~/bin/go1.10.2.linux-amd64.tar.gz" | sha256sum -c -
 }
 
 if ! go version 2>/dev/null; then
   echo "Installing go.."
-  sudo tar -C /usr/local -xzf /mnt/bin/go1.10.2.linux-amd64.tar.gz
+  sudo tar -C /usr/local -xzf ~/bin/go1.10.2.linux-amd64.tar.gz
 fi
 
 if ! sudo iptables-save | grep -q 8888; then
