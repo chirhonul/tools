@@ -16,7 +16,7 @@ echo "Checking if we can sudo without password.."
 
 [ -e ~/keys ] || {
   echo "Creating symlinks to ~/keys directory.."
-  ln -s /live/persistence/TailsData_unlocked/Persistent/mnt/keys ~/
+  ln -s /live/persistence/TailsData_unlocked/Persistent/keys ~/
 }
 
 if ! gpg -k | grep -q chinul; then
@@ -33,17 +33,17 @@ fi
 
 [ -e ~/src ] || {
   echo "Creating symlinks to ~/src directory.."
-  ln -s /live/persistence/TailsData_unlocked/Persistent/mnt/src/ ~/
+  ln -s /live/persistence/TailsData_unlocked/Persistent/src/ ~/
 }
 
 [ -e ~/bin ] || {
   echo "Creating symlink to ~/bin directory.."
-  ln -s /live/persistence/TailsData_unlocked/Persistent/mnt/bin/ ~/
+  ln -s /live/persistence/TailsData_unlocked/Persistent/bin/ ~/
 }
 
 [ -e ~/conf ] || {
   echo "Creating symlink to conf directory.."
-  ln -s /live/persistence/TailsData_unlocked/Persistent/mnt/src/github.com/chirhonul/conf ~/
+  ln -s /live/persistence/TailsData_unlocked/Persistent/src/github.com/chirhonul/conf ~/
 }
 
 [ -e ~/src/docs_clear ] || {
