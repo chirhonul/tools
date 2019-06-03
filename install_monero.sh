@@ -6,10 +6,10 @@ set -eu
 
 cd ~/bin
 
-[ -e ~/bin/monero-v0.13.0.4 ] || {
+[ -e ~/bin/monero-gui-v0.14.0.0 ] || {
   echo "Downloading monero.."
   torify wget https://downloads.getmonero.org/cli/linux64
-  echo "693e1a0210201f65138ace679d1ab1928aca06bb6e679c20d8b4d2d8717e50d6  ~/bin/monero-linux-x64-v0.13.0.4.tar.bz2" | sha256sum -c -
+  echo "a3d73a6fe1729c7d31e9c599849fd48e0eaa0c7c80c2e7238bf6a5b4cf467b29  ~/bin/monero-gui-linux-x64-v0.14.0.0.tar" | sha256sum -c -
 }
 
 if ! grep -q 'HiddenServicePort 18081' /etc/tor/torrc; then
@@ -20,6 +20,6 @@ if ! grep -q 'HiddenServicePort 18081' /etc/tor/torrc; then
     systemctl restart tor && \
     echo "Tor hidden service:" && \
     sleep 5 && \ # hack to allow async systemd restart above to take effect
-    cat /var/lib/tor/hidden_service/hostname'
+    cat /var/lib/tor/monerod/hostname'
 fi
 
